@@ -1,0 +1,7 @@
+By now, only a few researches have explored Recurrent Neural Network in sleep stage classification, while RNN models actually performs well. A state-of-the-art RNN model, DeepSleepNet, for instance, reaches an overall accuracy of about 0.8~0.85 in various datasets.[5] The special structure of RNN endows it with the ability to learn long-term dependencies, which fits rightly into the need of sleep stage scoring, such as transition rules[6] that sleep experts use to identify the next possible sleep stages. The Long Short-Term Memory(lstm) has a edge that it can keep long term information without the problem of gradient vanishing. In our approach, we implement a rather simple bidirectional-lstm model, and it turns out to perform quite well. Specifically, we take the features after preprocessing and arrange them in the original time order of PSG, and put them into a RNN model combining a 2 layer bidirectional lstm with 0.5 drop out rate before a fully connected layer(fc). The lstm part extracts useful information and long-term dependencies from input, and fc combines the hidden output linearly to calculate the score of each catagory. 
+The pipeline of the model is shown as below:
+[5] https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7961240
+
+[6]C. Iber, S. Ancoli-Israel, A. L. Chesson, Jr., and S. F. Quan, The AASM
+Manual for the Scoring of Sleep and Associated Events, Westchester,
+IL, USA: American Academy of Sleep Medicine, 2007
