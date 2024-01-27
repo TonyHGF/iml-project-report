@@ -8,7 +8,7 @@ _During sleep our brain goes through a series of changes between different sleep
 
 Various systems have been founded during these years:
 
-- In 2010, In [36], the author proposed feature weighting method using K means clustering. Welch spectral transform was used for feature extraction, and the selected features were used with K-means and de cision tree techniques. The study reported an overall accuracy of 83%.  
+- In 2010, In [36], the author proposed feature weighting method using K-means clustering. Welch spectral transform was used for feature extraction, and the selected features were used with K-means and decision tree techniques. The study reported an overall accuracy of 83%.  
 - In 2017, a combination of convolutional and recurrent layers was proposed by  [Supratak et al., 2017, Biswal et al., 2017].  
 
 - Li et al. [5] combined random forests and rules developed from the R&K sleep manual achieving an accuracy of 0.86 and Cohen’s kappa (*κ*) of 0.805 on a dataset with 198 subjects from Cleveland Sleep Study.

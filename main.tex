@@ -22,7 +22,7 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 \usepackage{xcolor}         % colors
-
+\usepackage{amsmath}
 
 \makeatletter
 \newif\if@submission
@@ -65,17 +65,53 @@ Pfurtscheller et. al. [6] extracted motor imagery signals from C3 and C4 EEG Cha
 Studies  showed  that  the  position  of  ERD  may  vary from subject to subject, and are not necessarily located be- neath  electrode  positions  C3  and  C4  [5].  As  such,  us- ing more channels of signals may improve performance.
 Mller-Gerking et. al. [4] proposed to use Common Spa-
 tial Patterns (CSP) for the classiﬁcation of motor execution or imagery  signals. The CSP method resulted in  signiﬁ- cant improvement to performances  as compared to their previous work in  [6].
-In this paper, we combined CSP and Principal Compo- nent Analysis (PCA) to improve the CSP feature classiﬁ- cation. The resulted transformation is equivalent to a set of spatial ﬁlters optimized to distinguish between the left and right hand movement or motor imagery. In addition, temporal ﬁltering was applied to reduce noise. In the past, the selection of frequency bands was limited to a few pre- deﬁned bands [4, 5]. In this paper, we investigated the ef- fects of temporal  ﬁltering for  speciﬁc  subject by  an ex- haustive search over all the frequency bands. We showed that classiﬁcation performance could be improved signiﬁ- cantly by applying proper band-pass ﬁlter. To further en- hance recognition accuracy, a Radial Basis Function (RBF) based feature selection and generation algorithm  [3] was adapted. We applied the Orthogonal Least Square (OLS) algorithm [3] to feature selection and generation. Using a Support Vector Machine (SVM) classiﬁer on the features found, we achieved 90% accuracy on a self-paced ﬁnger- taping dataset, the current best result in the literature on this
-
+In this paper, we combined CSP and Principal Compo- nent Analysis (PCA) to improve the CSP feature classiﬁ- cation. The resulted transformation is equivalent to a set of spatial ﬁlters optimized to distinguish between the left and right hand movement or motor imagery. In addition, temporal ﬁltering was applied to reduce noise. In the past, the selection of frequency bands was limited to a few pre- deﬁned bands [4, 5]. In this paper, we investigated the ef- fects of temporal  ﬁltering for  speciﬁc  subject by  an ex- haustive search over all the frequency bands. We showed that classiﬁcation performance could be improved signiﬁ- cantly by applying proper band-pass ﬁlter. To further en- hance recognition accuracy, a Radial Basis Function (RBF) based feature selection and generation algorithm  [3] was adapted. We applied the Orthogonal Least Square (OLS) algorithm [3] to feature selection and generation. Using a Support Vector Machine (SVM) classiﬁer on the features found, we achieved 90\% accuracy on a self-paced ﬁnger- taping dataset, the current best result in the literature on this
 dataset.
 The organization of the paper is as follows. Section 2 in- troduces the feature extraction by the combination of CSP and PCA. Section 3 presents the feature selection and gen- eration algorithms. Section 4 discusses the effects of differ- ent parameters on the recognition performance and present comparative experiment results. Finally, we conclude our paper and discuss some future work.
 
 
-\section{}
+\section{Dataset}
+In our study, we adopt the widely used Sleep-EDF database, and mainly dig into the Sleep Cassette(SC) part. 
+It contains 153 PSG recordings belonging to 82 subjects. 
+For 71 of them, the recording of the first night and the second night are available. 
+As for each PSG recording, we mainly take four signals into consideration: 2 EEG(Fpz-CZ and Pz-Cz), 1 EOG (horizontal), and 1 EMG (submental chin). 
+The EOG and EMG channels are sampled at 100Hz. Since full EMG recordings are not available, we only adopt 2 EEG and 1 EOG as input. 
+Each 30-second epoch of the recordings was manually labelled by sleep experts according to the R\&K standard [1] into one of eight categories \{W, N1, N2, N3, N4, REM, MOVEMENT, UNKNOWN\}. 
+As this database has been used differently in literature, it should be stressed that only the in-bed parts (from lights off time to lights on time) of the recordings were used as recommended in [2],[3],[4].
+
+\section{Evaluation Method}
+In order to evaluate the models in terms of multiclass classification accuracy, there are mainly three approaches: macro F1-score(MF1), overall accuracy(ACC), Cohen's Kappa coefficient($\kappa$). We split the PSGs into testing set, containing 25\% of data, and the training set, containing the rest 75\%. For all the traditional machine learning models and deep learning models, we use the training set to train the models and use the testing set to check their performance. We compare the output of the models and the ground truth using MF1, ACC and $\kappa$ with the following formulas:
+$$
+\begin{aligned}
+N&=\text{the number of testing samples}\\
+k&=\text{the number of catagories}\\
+CFM_{i,j}&=\text{the number of samples whose real output is j but prediction is i}\\
+TP_i&=CFM_{i,i}\quad FP_j=\sum_{i\neq j}CFM_{i,j}\quad FN_i=\sum_{j\neq i}CFM_{i,j}\\
+ACC&=\frac{\sum_{i=1}^{k}TP_i}{N}\\
+pre&=\frac{1}{k}\sum_{i=1}^k\frac{TP_i}{TP_i+FP_i}\quad rec=\frac{1}{k}\sum_{i=1}^k\frac{TP_i}{TP_i+FN_i}\\
+MF1&=\frac{2*pre*rec}{pre+rec}\\
+p_o&=ACC\quad p_e=\frac{\sum_{i=1}^{k}(\sum_{j=1}^kCFM_{i,j})(\sum_{j=1}^kCFM_{j,i})}{N^2}\\
+\kappa&=\frac{p_o-p_e}{1-p_e}
+\end{aligned}
+$$
+
+\section{Results}
 
 
+[1] J. A. Hobson, “A manual of standardized terminology, techniques and
+scoring system for sleep stages of human subjects,” Electroencephalography Clin. Neurophysiol., vol. 26, no. 6, 1969, Art. no. 644.
 
+[2] H. Phan et al., “Joint classification and prediction CNN framework for
+automatic sleep stage classification,” IEEE Trans Biomed Eng, vol. 66,
+no. 5, pp. 1285–1296, 2019.
 
+[3] O. Tsinalis et al., “Automatic sleep stage scoring with single-channel
+EEG using convolutional neural networks,” arXiv:1610.01683, 2016.
 
+[4]H. Phan et al., “DNN filter bank improves 1-max pooling CNN for
+single-channel EEG automatic sleep stage classification,” in Proc.
+EMBC, 2018, pp. 453–456.
+
+[5]
 
 \end{document}
